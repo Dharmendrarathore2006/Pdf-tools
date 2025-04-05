@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Image Resize Tool for compression and optimization. Resize and compress images with customizable compression levels for web use.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Your Name">
+  <title>Image Resize Tool</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+    }
+
+    header p {
+      font-size: 1rem;
+    }
+
+    #upload-section {
+      text-align: center;
+      margin: 20px;
+    }
+
+    #image-upload {
+      margin: 10px 0;
+    }
+
+    #compression-settings {
+      margin: 20px 0;
+    }
+
+    #resize-btn {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    #resize-btn:hover {
+      background-color: #218838;
+    }
+
+    #image-display {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    #image-preview img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+
+    #adsense-container {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Image Resize & Compression Tool</h1>
+    <p>Resize and compress images to optimize for web performance</p>
+  </header>
+
+  <section id="upload-section">
+    <input type="file" id="image-upload" accept="image/*">
+    <div id="compression-settings">
+      <label for="compression-level">Compression Level:</label>
+      <select id="compression-level">
+        <option value="0.1">Low (10%)</option>
+        <option value="0.5">Medium (50%)</option>
+        <option value="0.8">High (80%)</option>
+      </select>
+    </div>
+    <button id="resize-btn">Resize & Compress</button>
+  </section>
+
+  <section id="image-display">
+    <h2>Preview</h2>
+    <div id="image-preview"></div>
+  </section>
+
+  <!-- AdSense Placeholder -->
+  <section id="adsense-container">
+    <div id="adsense-placeholder">
+      <!-- Placeholder for Google AdSense ad code -->
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXX"  <!-- Insert your AdSense Publisher ID -->
+           data-ad-slot="XXXXXX"  <!-- Insert your AdSense Ad Unit ID -->
+           data-ad-format="auto"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Image Resize Tool. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('resize-btn').addEventListener('click', resizeImage);
+
+    function resizeImage() {
+      const fileInput = document.getElementById('image-upload');
+      const compressionLevel = parseFloat(document.getElementById('compression-level').value);
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = img.width * compressionLevel;
+            const height = img.height * compressionLevel;
+            
+            // Set canvas dimensions
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Draw resized image onto canvas
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Create compressed image
+            canvas.toBlob(function(blob) {
+              const url = URL.createObjectURL(blob);
+              displayImage(url);
+            }, 'image/jpeg', compressionLevel);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      }
+    }
+
+    function displayImage(url) {
+      const previewContainer = document.getElementById('image-preview');
+      previewContainer.innerHTML = `<img src="${url}" alt="Compressed Image">`;
+    }
+  </script>
+
+</body>
+</html>
